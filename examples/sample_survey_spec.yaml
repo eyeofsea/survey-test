@@ -1,0 +1,49 @@
+# /new-survey 의 "샘플로 시작" 모드가 사용하는 5문항 데모 설문.
+# 인구통계 2개 + 리커트 2개 + 자유응답 1개.
+
+survey:
+  name: "샘플: 일상 만족도 짧은 설문"
+  language: "KO"
+  project_category: "CORE"
+
+questions:
+  - type: multiple_choice
+    text: "귀하의 연령대를 선택해주세요."
+    choices:
+      - "18~24세"
+      - "25~34세"
+      - "35~44세"
+      - "45~54세"
+      - "55세 이상"
+    allow_multiple: false
+
+  - type: multiple_choice
+    text: "현재 거주 지역은?"
+    choices:
+      - "수도권"
+      - "광역시"
+      - "그 외 지역"
+      - "해외"
+    allow_multiple: false
+
+  - type: likert
+    text: "최근 한 주간 일상생활에 만족했다."
+    scale:
+      - "전혀 그렇지 않다"
+      - "그렇지 않다"
+      - "보통이다"
+      - "그렇다"
+      - "매우 그렇다"
+
+  - type: likert
+    text: "최근 한 주간 충분한 수면을 취했다."
+    scale:
+      - "전혀 그렇지 않다"
+      - "그렇지 않다"
+      - "보통이다"
+      - "그렇다"
+      - "매우 그렇다"
+
+  - type: text_entry
+    text: "한 주를 돌아보며 가장 인상 깊었던 경험을 자유롭게 적어주세요."
+    text_type: "MultiLine"

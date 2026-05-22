@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run python scripts/doctor.py 2>&1 || true"
+          }
+        ]
+      }
+    ]
+  }
+}

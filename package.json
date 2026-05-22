@@ -1,0 +1,14 @@
+{
+  "name": "survey-test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Qualtrics x Prolific lecture repo controlled via Claude Code",
+  "scripts": {
+    "bootstrap": "pnpm --prefix vendor/qualtrics-mcp-server install",
+    "qualtrics-mcp": "npx tsx vendor/qualtrics-mcp-server/src/index.ts"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "engines": {
+    "node": ">=22"
+  }
+}

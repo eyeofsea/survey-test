@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "qualtrics": {
+      "command": "npx",
+      "args": ["tsx", "vendor/qualtrics-mcp-server/src/index.ts"],
+      "env": {
+        "QUALTRICS_API_TOKEN": "${QUALTRICS_API_TOKEN}",
+        "QUALTRICS_DATA_CENTER": "${QUALTRICS_DATA_CENTER}"
+      }
+    },
+    "prolific": {
+      "command": "uv",
+      "args": ["run", "python", "-m", "prolific_mcp.server"],
+      "env": {
+        "PROLIFIC_API_TOKEN": "${PROLIFIC_API_TOKEN}",
+        "PROLIFIC_WORKSPACE_ID": "${PROLIFIC_WORKSPACE_ID}",
+        "PROLIFIC_PROJECT_ID": "${PROLIFIC_PROJECT_ID}"
+      }
+    }
+  }
+}

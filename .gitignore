@@ -1,0 +1,38 @@
+# 환경변수 (절대 커밋 금지 - API 토큰 보호)
+.env
+.env.local
+
+# Node
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.python-version
+*.egg-info/
+.uv-cache/
+
+# 도구 캐시
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / 에디터
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# 산출물
+exports/
+*.csv
+*.xlsx
+!examples/*.csv

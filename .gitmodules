@@ -1,0 +1,3 @@
+[submodule "vendor/qualtrics-mcp-server"]
+	path = vendor/qualtrics-mcp-server
+	url = https://github.com/yrvelez/qualtrics-mcp-server.git

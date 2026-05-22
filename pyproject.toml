@@ -1,0 +1,21 @@
+[project]
+name = "prolific-mcp"
+version = "0.1.0"
+description = "Minimal Prolific MCP server for student lectures"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=0.4.0",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "python-dotenv>=1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["prolific_mcp"]
+
+[tool.uv]
+package = true
