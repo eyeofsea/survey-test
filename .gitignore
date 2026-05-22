@@ -36,3 +36,6 @@ exports/
 *.csv
 *.xlsx
 !examples/*.csv
+
+# 런타임 상태 (Qualtrics 설문 id / 블록 id 등 슬래시 커맨드가 기록)
+.survey_state.json

@@ -95,6 +95,37 @@ Claude 가 토큰을 하나씩 물어봐서 `.env` 에 안전하게 기록합니
 
 ---
 
+## 무료 Qualtrics 계정으로 응답 수집하기 (QSF 워크플로우)
+
+학생 대부분은 **무료 Qualtrics 계정**을 사용합니다. 무료 계정은 _"End of Survey → Redirect to URL"_ 옵션을 지원하지 않기 때문에, 참여자가 설문을 끝낸 뒤 Prolific 완료 페이지로 자동 이동시키는 것이 불가능합니다. 이 레포는 이 한계를 우회하기 위해 다음 흐름을 권장합니다.
+
+```
+1. 본 레포의 API 로 설문을 설계/배선 (creator 계정에서)
+   /new-survey  →  /connect-prolific
+2. Qualtrics 에서 설문을 QSF 로 export
+3. 학생의 무료 Qualtrics 계정으로 QSF import → 응답 수집
+```
+
+### 핵심 트릭: completion code 를 종료 화면에 직접 표시
+
+자동 redirect 가 막혀 있으므로, **completion code 를 설문 마지막 안내문 자체에 큰 글씨로 baked-in 해 둡니다.** 참여자는 화면의 코드를 복사해 Prolific 에 직접 붙여넣습니다.
+
+```bash
+uv run python scripts/embed_completion_code.py \
+  --survey-id SV_xxxxxxxxxxxxxxx \
+  --code FF18AB
+```
+
+이 스크립트는:
+
+- "End of Survey" 블록의 마지막 descriptive text(DB) 문항을 찾아 36px 굵은 글씨로 코드를 표시하는 HTML 로 교체합니다.
+- 동일한 메시지를 사용자 라이브러리(`UR_*`)에 `category: endOfSurvey` 메시지로 저장해 두어 향후 재사용/추적 가능합니다.
+- QSF 로 export 하면 코드가 그대로 따라가므로 무료 계정에서도 동일하게 동작합니다.
+
+> 유료 계정으로 redirect 를 쓸 수 있는 경우에도 이 스크립트를 함께 실행해 두는 편이 안전합니다 — redirect 가 실패할 때의 fallback 이 됩니다.
+
+---
+
 ## 출처 / 라이선스
 
 - Qualtrics MCP 서버: https://github.com/yrvelez/qualtrics-mcp-server (MIT)
