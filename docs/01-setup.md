@@ -36,11 +36,32 @@
 
 ## Prolific 토큰 + 워크스페이스 + 프로젝트
 
+### 토큰 발급
 1. https://app.prolific.com 로그인 → 좌측 하단 **Settings**
 2. **Go to API tokens** → **Create token** → 이름을 적당히 (`claude-class`) → 생성
    - 토큰은 한 번만 표시됩니다. 이 값이 `PROLIFIC_API_TOKEN`.
-3. 워크스페이스 선택 → 브라우저 URL 의 `/workspaces/<여기>` 부분이 `PROLIFIC_WORKSPACE_ID`.
-4. 워크스페이스 안에서 **New project** 로 프로젝트 하나 생성 (예: `class-practice`) → 프로젝트를 열면 URL `/projects/<여기>` 가 `PROLIFIC_PROJECT_ID`.
+
+### Workspace ID / Project ID 두 가지 방법
+
+**방법 A — 추천 (Claude 가 자동 조회):**
+토큰만 `.env` 에 채운 뒤 Claude Code 에서:
+```
+/find-prolific-ids
+```
+워크스페이스/프로젝트 목록을 한국어 표로 보여주고, 선택만 하면 `.env` 의 두 값을 자동으로 채웁니다.
+프로젝트가 없으면 안내 메시지가 뜨므로 Prolific 대시보드에서 **New project** 한 번만 클릭하면 됩니다.
+
+**방법 B — 수동 (URL 에서 복사):**
+1. 워크스페이스 선택 → 브라우저 URL 확인:
+   ```
+   https://app.prolific.com/researcher/workspaces/644abc12...fedcba12/...
+                                                  └─── 24자리 영숫자 = WORKSPACE_ID ───┘
+   ```
+2. 워크스페이스 안에서 **New project** 로 프로젝트 생성 (예: `class-practice`) → 프로젝트를 클릭해 열기 → URL:
+   ```
+   https://app.prolific.com/researcher/workspaces/<workspace_id>/projects/65bd9876...654321
+                                                                          └─── 24자리 = PROJECT_ID ───┘
+   ```
 
 ## `.env` 채우기
 

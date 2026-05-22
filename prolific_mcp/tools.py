@@ -20,6 +20,38 @@ def _format_currency(pence: int) -> str:
 
 def register_tools(mcp, client: ProlificClient) -> None:
     @mcp.tool()
+    def list_workspaces() -> list[dict]:
+        """현재 토큰으로 접근 가능한 모든 워크스페이스를 반환한다.
+
+        .env 의 PROLIFIC_WORKSPACE_ID 를 찾기 위한 도구. 토큰만 있으면 호출 가능.
+        """
+        return [
+            {
+                "id": w.get("id"),
+                "title": w.get("title"),
+                "description": w.get("description"),
+                "owner": w.get("owner"),
+            }
+            for w in client.list_workspaces()
+        ]
+
+    @mcp.tool()
+    def list_projects(workspace_id: str) -> list[dict]:
+        """특정 워크스페이스의 프로젝트 목록.
+
+        .env 의 PROLIFIC_PROJECT_ID 를 찾기 위한 도구. /find-prolific-ids 가 사용.
+        """
+        return [
+            {
+                "id": p.get("id"),
+                "title": p.get("title"),
+                "description": p.get("description"),
+                "workspace": p.get("workspace"),
+            }
+            for p in client.list_projects(workspace_id)
+        ]
+
+    @mcp.tool()
     def list_studies() -> list[dict]:
         """현재 프로젝트(.env 의 PROLIFIC_PROJECT_ID) 의 스터디 목록을 조회한다."""
         studies = client.list_studies()

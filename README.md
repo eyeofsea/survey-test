@@ -53,6 +53,8 @@ Claude Code 를 이 디렉터리에서 실행한 뒤:
 
 Claude 가 토큰을 하나씩 물어봐서 `.env` 에 안전하게 기록합니다 (채팅창에 토큰을 다시 표시하지 않습니다).
 
+> Prolific 의 `WORKSPACE_ID` / `PROJECT_ID` 를 URL 에서 직접 찾기 어렵다면 토큰 입력 후 `/find-prolific-ids` 를 실행하세요 — API 로 자동 조회해 `.env` 를 채워줍니다.
+
 ### 4. 설문 만들기 → Prolific 연결 → 발행
 
 ```
@@ -69,6 +71,7 @@ Claude 가 토큰을 하나씩 물어봐서 `.env` 에 안전하게 기록합니
 | 커맨드 | 하는 일 |
 |---|---|
 | `/setup-keys` | `.env` 대화형 작성 + `doctor.py` 진단 |
+| `/find-prolific-ids` | 토큰만으로 Prolific 워크스페이스/프로젝트 ID 자동 조회 → `.env` 갱신 |
 | `/new-survey` | 자연어 질의로 Qualtrics 설문 생성 |
 | `/connect-prolific` | Qualtrics 설문에 Prolific 메타데이터 배선 + DRAFT 스터디 생성 |
 | `/launch-study` | DRAFT 스터디 검토 후 명시 확인을 받고 퍼블리시 (과금 발생) |

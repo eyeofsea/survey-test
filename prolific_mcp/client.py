@@ -85,6 +85,14 @@ class ProlificClient:
     def me(self) -> dict:
         return self._request("GET", "/users/me")
 
+    def list_workspaces(self) -> list[dict]:
+        data = self._request("GET", "/workspaces/")
+        return data.get("results", []) if isinstance(data, dict) else data
+
+    def list_projects(self, workspace_id: str) -> list[dict]:
+        data = self._request("GET", f"/workspaces/{workspace_id}/projects/")
+        return data.get("results", []) if isinstance(data, dict) else data
+
     def list_studies(self) -> list[dict]:
         params = {"project": self.project_id} if self.project_id else None
         data = self._request("GET", "/studies/", params=params)
