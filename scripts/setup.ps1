@@ -1,43 +1,43 @@
-﻿# Claude Code (Windows) 부트스트랩 스크립트
-# 사용: PowerShell 에서 ./scripts/setup.ps1
+﻿# Claude Code (Windows) bootstrap script
+# Usage: PowerShell -> ./scripts/setup.ps1
 #
-# setup.sh 와 동일한 단계를 수행합니다:
-#   1) Node.js 22+ 확인
-#   2) pnpm (corepack) + Qualtrics MCP 의존성 설치
-#   3) uv 로 Prolific MCP 의존성 동기화
-#   4) .env 존재 여부 확인 (없으면 .env.example 복사)
-#   5) doctor.py 실행
+# Steps (mirrors setup.sh on macOS/Linux):
+#   1) Verify Node.js 22+
+#   2) Install Qualtrics MCP server deps via pnpm (corepack fallback to npm)
+#   3) Sync Prolific MCP Python deps via uv
+#   4) Ensure .env exists (copy from .env.example if missing)
+#   5) Run doctor.py to check API tokens (Korean output handled by Python)
 
 $ErrorActionPreference = "Stop"
 
-# 콘솔 출력 인코딩을 UTF-8 로 (PowerShell 5.1 에서 한글/기호 깨짐 방지)
+# Force UTF-8 console so doctor.py Korean output is not garbled
 try { [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new() } catch { }
 
-# 레포 루트로 이동
+# Move to repo root
 Set-Location (Join-Path $PSScriptRoot "..")
 
-function Step($msg) { Write-Host "`n▶ $msg" -ForegroundColor Blue }
-function Ok($msg)   { Write-Host "  ✓ $msg" -ForegroundColor Green }
-function Warn($msg) { Write-Host "  ! $msg" -ForegroundColor Yellow }
-function ErrMsg($msg) { Write-Host "  ✗ $msg" -ForegroundColor Red }
+function Step($msg) { Write-Host "`n>> $msg" -ForegroundColor Blue }
+function Ok($msg)   { Write-Host "  [ok] $msg" -ForegroundColor Green }
+function Warn($msg) { Write-Host "  [!]  $msg" -ForegroundColor Yellow }
+function ErrMsg($msg) { Write-Host "  [x] $msg" -ForegroundColor Red }
 
-# 1) Node.js 22+ 확인
-Step "Node.js 22+ 확인"
+# 1) Node.js 22+
+Step "Check Node.js 22+"
 $nodeCmd = Get-Command node -ErrorAction SilentlyContinue
 if (-not $nodeCmd) {
-    ErrMsg "node 가 설치되어 있지 않습니다. https://nodejs.org 에서 22 이상을 설치하세요."
+    ErrMsg "node not installed. Get Node 22+ from https://nodejs.org"
     exit 1
 }
 $nodeVersion = & node -v
 $nodeMajor = [int]($nodeVersion -replace '^v(\d+).*', '$1')
 if ($nodeMajor -lt 22) {
-    ErrMsg "Node $nodeMajor 감지. Qualtrics MCP 서버는 Node 22+ 가 필요합니다."
+    ErrMsg "Node $nodeMajor detected. Qualtrics MCP server requires Node 22+."
     exit 1
 }
 Ok "node $nodeVersion"
 
-# 2) pnpm + Qualtrics MCP 의존성
-Step "Qualtrics MCP 서버 의존성 설치 (pnpm)"
+# 2) pnpm + Qualtrics MCP deps
+Step "Install Qualtrics MCP server deps (pnpm)"
 $pnpmCmd = Get-Command pnpm -ErrorAction SilentlyContinue
 if (-not $pnpmCmd) {
     $corepackCmd = Get-Command corepack -ErrorAction SilentlyContinue
@@ -51,43 +51,43 @@ try {
     if ($pnpmCmd) {
         & pnpm install --silent
     } else {
-        Warn "pnpm 을 찾을 수 없어 npm 으로 대체합니다."
+        Warn "pnpm not found, falling back to npm."
         & npm install --silent
     }
-    if ($LASTEXITCODE -ne 0) { throw "qualtrics-mcp-server 의존성 설치 실패" }
+    if ($LASTEXITCODE -ne 0) { throw "qualtrics-mcp-server install failed" }
 } finally {
     Pop-Location
 }
-Ok "qualtrics-mcp-server 설치 완료"
+Ok "qualtrics-mcp-server installed"
 
-# 3) uv + Python 의존성
-Step "Prolific MCP 서버 의존성 설치 (uv)"
+# 3) uv + Python deps
+Step "Install Prolific MCP server deps (uv)"
 $uvCmd = Get-Command uv -ErrorAction SilentlyContinue
 if (-not $uvCmd) {
-    ErrMsg "uv 가 설치되어 있지 않습니다."
-    Write-Host "  설치: PowerShell 에서 `irm https://astral.sh/uv/install.ps1 | iex`"
-    Write-Host "  또는: pip install uv"
+    ErrMsg "uv not installed."
+    Write-Host "  Install via PowerShell: irm https://astral.sh/uv/install.ps1 | iex"
+    Write-Host "  Or: pip install uv"
     exit 1
 }
 & uv sync --quiet
-if ($LASTEXITCODE -ne 0) { ErrMsg "uv sync 실패"; exit 1 }
-Ok "prolific_mcp 가상환경 동기화 완료"
+if ($LASTEXITCODE -ne 0) { ErrMsg "uv sync failed"; exit 1 }
+Ok "prolific_mcp venv synced"
 
-# 4) .env 확인
-Step ".env 파일 확인"
+# 4) .env file
+Step "Check .env"
 if (-not (Test-Path .env)) {
     Copy-Item .env.example .env
-    Warn ".env 가 없어 .env.example 을 복사했습니다."
-    Warn "Claude Code 에서 '/setup-keys' 를 실행해 토큰을 입력하세요."
+    Warn ".env was missing. Copied .env.example -> .env"
+    Warn "In Claude Code, run /setup-keys to fill the tokens."
 } else {
-    Ok ".env 존재"
+    Ok ".env exists"
 }
 
-# 5) doctor
-Step "API 토큰 진단 (doctor.py)"
+# 5) doctor (Korean output produced by Python)
+Step "Run doctor.py (Korean output)"
 & uv run python scripts/doctor.py
 if ($LASTEXITCODE -eq 0) {
-    Ok "준비 완료. Claude Code 에서 '/new-survey' 부터 시작하세요."
+    Ok "Ready. In Claude Code, start with /new-survey."
 } else {
-    Warn "doctor 가 일부 실패했습니다. .env 토큰을 확인하고 '/setup-keys' 를 실행하세요."
+    Warn "doctor reported issues. Check .env tokens and run /setup-keys in Claude Code."
 }
