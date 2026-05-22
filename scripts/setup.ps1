@@ -1,4 +1,4 @@
-# Claude Code (Windows) 부트스트랩 스크립트
+﻿# Claude Code (Windows) 부트스트랩 스크립트
 # 사용: PowerShell 에서 ./scripts/setup.ps1
 #
 # setup.sh 와 동일한 단계를 수행합니다:
@@ -9,6 +9,9 @@
 #   5) doctor.py 실행
 
 $ErrorActionPreference = "Stop"
+
+# 콘솔 출력 인코딩을 UTF-8 로 (PowerShell 5.1 에서 한글/기호 깨짐 방지)
+try { [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new() } catch { }
 
 # 레포 루트로 이동
 Set-Location (Join-Path $PSScriptRoot "..")
