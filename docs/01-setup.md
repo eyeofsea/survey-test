@@ -2,6 +2,18 @@
 
 이 장을 마치면 `.env` 파일의 5개 변수를 모두 채울 수 있습니다.
 
+## OS 별 도구 설치
+
+| OS | Claude Code | Node.js 22+ | uv |
+|---|---|---|---|
+| macOS / Linux | https://claude.com/claude-code | `brew install node` / 패키지 매니저 | `pip install uv` |
+| **Windows** | https://claude.com/claude-code (Windows 설치 패키지) | https://nodejs.org/ LTS 다운로드 | PowerShell: `irm https://astral.sh/uv/install.ps1 \| iex` |
+
+**Windows 전용 추가 안내:**
+- PowerShell 을 관리자 권한으로 한 번 실행해 `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` 실행 (스크립트 실행 허용)
+- Git for Windows 가 설치돼 있어야 함 (https://git-scm.com/download/win) — `git clone --recurse-submodules` 가 필요
+- 부트스트랩은 `./scripts/setup.sh` 대신 `./scripts/setup.ps1` 사용
+
 ## 필요한 계정
 
 1. **Qualtrics**: https://www.qualtrics.com/free-account/

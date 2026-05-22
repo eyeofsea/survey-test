@@ -6,7 +6,7 @@ description: .env 파일에 Qualtrics/Prolific API 토큰을 대화형으로 입
 
 ## 절차
 
-1. 우선 `.env` 가 있는지 `ls .env` 로 확인하세요. 없으면 `cp .env.example .env` 로 복사하세요.
+1. 우선 `.env` 가 있는지 확인하세요 — `Bash` 도구로 `ls .env` 가 셸에 따라 깨질 수 있으니, `Read` 도구로 `.env` 를 직접 읽어 보세요. 파일이 없다는 에러가 나면 `Read` 로 `.env.example` 을 읽은 뒤 그 내용을 `Write` 로 `.env` 에 그대로 저장하세요 (Windows / macOS / Linux 모두에서 동작).
 
 2. AskUserQuestion 으로 어떤 항목을 입력할지 물어보세요. 옵션:
    - 모든 토큰을 처음부터 입력

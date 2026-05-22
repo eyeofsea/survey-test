@@ -1,0 +1,15 @@
+# 한글/UTF-8 보호: 모든 텍스트 파일을 LF 로 정규화하여 Windows CRLF 변환 시
+# 한글 마크다운 제목이 깨지는 사고 방지.
+* text=auto eol=lf
+
+# 바이너리 (혹시 docs/images 에 들어갈 경우)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+
+# Windows 전용 스크립트는 CRLF 유지
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf

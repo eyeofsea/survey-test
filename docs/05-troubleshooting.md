@@ -62,6 +62,37 @@
 - 참여자 풀이 비어있을 수 있음 — Prolific 의 필터(국가, 언어 등) 가 너무 좁지 않은지 확인
 - 학생 자기 자신은 Researcher 계정으로는 Participant 가 될 수 없음 → 다른 계정/지인의 도움 필요
 
+## 🪟 Windows 전용 문제
+
+### `./scripts/setup.ps1` 가 실행되지 않음 — "스크립트 실행이 사용 안 함"
+PowerShell 실행 정책 때문. 한 번만 실행:
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+### `uv` / `pnpm` / `npx` 가 "인식할 수 없는 명령" 으로 뜸
+PATH 등록이 안 된 경우. 새 PowerShell 창을 열어 다시 시도 (설치 직후에는 환경변수가 갱신되지 않음). 그래도 안 되면:
+- Node: 시스템 환경변수에 `C:\Program Files\nodejs\` 가 있는지 확인
+- uv: `%USERPROFILE%\.local\bin` 또는 `%USERPROFILE%\.cargo\bin` 이 PATH 에 있는지
+
+### Claude Code 에서 MCP 서버가 "Not connected" 상태
+Windows 의 일부 환경에서 `npx` spawn 이 실패하는 경우가 있음. 다음을 시도:
+1. Claude Code 를 완전히 종료 → 레포 디렉터리에서 PowerShell 열어 `pnpm --prefix vendor/qualtrics-mcp-server install` 직접 실행해 의존성 재설치
+2. Claude Code 재시작 후 채팅창 좌상단 ⚙️ → MCP 상태 확인
+3. 여전히 실패하면 `npx tsx vendor/qualtrics-mcp-server/src/index.ts` 를 PowerShell 에서 직접 실행해 에러 메시지 확인
+
+### 한글이 깨짐 (`?` 또는 모자이크)
+PowerShell 코드 페이지를 UTF-8 로:
+```powershell
+chcp 65001
+```
+영구 설정: 시스템 설정 → 국가 또는 지역 → 관리용 언어 설정 → 시스템 로캘 변경 → "Beta: 세계 언어 지원을 위해 Unicode UTF-8 사용" 체크.
+
+### `.env` 가 메모장으로 저장돼 BOM 이 붙음
+Windows 메모장은 UTF-8 저장 시 BOM 을 추가해 doctor 가 첫 변수를 못 읽을 수 있음. 다음 중 하나로:
+- VS Code / Notepad++ 로 열어 "UTF-8 (BOM 없음)" 으로 저장
+- Claude Code 에서 `/setup-keys` 사용 (Edit 도구는 BOM 추가 안 함)
+
 ## 그래도 막힐 때
 
 - 도구 호출 에러 메시지 전체를 그대로 강사 / 조교에게 전달
